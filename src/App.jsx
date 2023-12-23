@@ -2,15 +2,14 @@ import { useState } from "react";
 import "./App.css";
 import AltaComponent from "./Components/AltaComponent/AltaComponent";
 import EmpleadosComponent from "./Components/EmpleadosComponent/EmpleadosComponent";
-
+import SearchComponent from "./Components/SearchComponent/SearchComponent";
 export default function App() {
   const [empleados, setEmpleados] = useState([]);
+  const [filteredEmpleados, setFilteredEmpleados] = useState([]);
 
   const handleAddEmpleado = (empleado) => {
-    // Log the new employee data here
     console.log("Employee registered:", empleado);
 
-    // Update the state with the new employee
     const newEmpleados = [
       ...empleados,
       { id: empleados.length + 1, ...empleado },
@@ -40,21 +39,41 @@ export default function App() {
     setEmpleados(empleados.filter((empleado) => empleado.id !== id));
   };
 
+  const handleSearch = ({ criteria, text }) => {
+    const lowercasedText = text.toLowerCase();
+
+    const filteredData = empleados.filter((empleado) => {
+      const valueToSearch = String(empleado[criteria]).toLowerCase();
+      return valueToSearch.includes(lowercasedText);
+    });
+
+    setFilteredEmpleados(filteredData);
+  };
   return (
     <div className="container">
       <div className="leftContainer">
-        <AltaComponent
-          onSubmit={handleAddEmpleado}
-          onRegisterLog={(data) => console.log(data)}
-        />
+        <div className="topContainer">
+          <h1>Registro de Empleados</h1>
+        </div>
+        <div className="bottomContainer">
+          <AltaComponent
+            onSubmit={handleAddEmpleado}
+            onRegisterLog={(data) => console.log(data)}
+          />
+        </div>
       </div>
       <div className="rightContainer">
-        <EmpleadosComponent
-          empleados={empleados}
-          onUpdateEdad={handleUpdateEdad}
-          onUpdateEstatus={handleUpdateEstatus}
-          onDelete={handleDelete}
-        />
+        <div className="topContainer">
+          <SearchComponent onSearch={handleSearch} />{" "}
+        </div>
+        <div className="bottomContainer">
+          <EmpleadosComponent
+            empleados={filteredEmpleados.length ? filteredEmpleados : empleados}
+            onUpdateEdad={handleUpdateEdad}
+            onUpdateEstatus={handleUpdateEstatus}
+            onDelete={handleDelete}
+          />
+        </div>
       </div>
     </div>
   );
