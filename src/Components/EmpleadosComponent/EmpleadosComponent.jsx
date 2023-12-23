@@ -7,7 +7,6 @@ const EmpleadosComponent = ({
 }) => {
   console.log("Empleados:", empleados);
 
-  // Use useCallback to memoize the function and prevent unnecessary re-renders
   const handleUpdateEstatus = useCallback(
     (id, newStatus) => {
       onUpdateEstatus(id, newStatus);
@@ -15,7 +14,6 @@ const EmpleadosComponent = ({
     [onUpdateEstatus]
   );
 
-  // Use useEffect to log the updated empleados whenever it changes
   useEffect(() => {
     console.log("Updated Empleados:", empleados);
   }, [empleados]);
@@ -57,17 +55,21 @@ const EmpleadosComponent = ({
             <td>{empleado.id}</td>
             <td>{empleado.nombre}</td>
             <td>{empleado.cargo}</td>
-            <td>
-              <input
-                type="number"
-                value={empleado.edad}
-                onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
-              />
-            </td>
-            <td>
-              {" "}
-              <td>{empleado.estatus ? "Activo" : "Inactivo"}</td>
-            </td>
+            {empleado.estatus ? (
+              // Render input field if empleado.estatus is true
+
+              <td>{empleado.edad}</td>
+            ) : (
+              // Render simple td with empleado.edad if empleado.estatus is false
+              <td>
+                <input
+                  type="number"
+                  value={empleado.edad}
+                  onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
+                />
+              </td>
+            )}
+            <td>{empleado.estatus ? "Activo" : "Inactivo"}</td>
             <td>{renderActions(empleado)}</td>
           </tr>
         ))}
