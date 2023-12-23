@@ -24,13 +24,10 @@ const AltaComponent = ({ onSubmit, onRegisterLog }) => {
       estatus: true,
     };
 
-    // Call the logging function with the new employee data
     onRegisterLog(newEmployeeData);
 
-    // Call the onSubmit prop function with the new employee data
     onSubmit(newEmployeeData);
 
-    // Reset form fields
     setNombre("");
     setFechaNacimiento("");
     setEdad("");

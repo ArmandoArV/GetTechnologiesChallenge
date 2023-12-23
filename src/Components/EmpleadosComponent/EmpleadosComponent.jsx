@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from "react";
+import "./EmpleadosComponent.css";
 const EmpleadosComponent = ({
   empleados,
   onUpdateEstatus,
@@ -22,15 +23,23 @@ const EmpleadosComponent = ({
     if (empleado.estatus) {
       return (
         <>
-          <button onClick={() => handleUpdateEstatus(empleado.id, false)}>
+          <button
+            className="desactivar"
+            onClick={() => handleUpdateEstatus(empleado.id, false)}
+          >
             Desactivar
           </button>
-          <button onClick={() => onDelete(empleado.id)}>Eliminar</button>
+          <button className="eliminar" onClick={() => onDelete(empleado.id)}>
+            Eliminar
+          </button>
         </>
       );
     } else {
       return (
-        <button onClick={() => handleUpdateEstatus(empleado.id, true)}>
+        <button
+          className="activar"
+          onClick={() => handleUpdateEstatus(empleado.id, true)}
+        >
           Activar
         </button>
       );
@@ -53,14 +62,31 @@ const EmpleadosComponent = ({
         {empleados.map((empleado) => (
           <tr key={empleado.id}>
             <td>{empleado.id}</td>
-            <td>{empleado.nombre}</td>
-            <td>{empleado.cargo}</td>
             {empleado.estatus ? (
-              // Render input field if empleado.estatus is true
-
+              <td>{empleado.nombre}</td>
+            ) : (
+              <td>
+                <input
+                  type="text"
+                  value={empleado.nombre}
+                  onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
+                />
+              </td>
+            )}
+            {empleado.estatus ? (
+              <td>{empleado.cargo}</td>
+            ) : (
+              <td>
+                <input
+                  type="text"
+                  value={empleado.cargo}
+                  onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
+                />
+              </td>
+            )}
+            {empleado.estatus ? (
               <td>{empleado.edad}</td>
             ) : (
-              // Render simple td with empleado.edad if empleado.estatus is false
               <td>
                 <input
                   type="number"
