@@ -1,21 +1,11 @@
-import React, { useEffect, useCallback, useState } from "react";
-
-const EmpleadosComponent = ({ empleados, onDelete, onUpdateEdad }) => {
-  // Define empleados state and its updater function
-  const [empleadosState, setEmpleados] = useState(empleados);
-
-  // Use useEffect to log the updated empleados whenever it changes
-  // Define onUpdateEstatus function to update the empleados state
-  const onUpdateEstatus = useCallback(
-    (id, newStatus) => {
-      setEmpleados((prevEmpleados) =>
-        prevEmpleados.map((empleado) =>
-          empleado.id === id ? { ...empleado, estatus: newStatus } : empleado
-        )
-      );
-    },
-    [setEmpleados]
-  );
+import React, { useCallback, useEffect } from "react";
+const EmpleadosComponent = ({
+  empleados,
+  onUpdateEstatus,
+  onDelete,
+  onUpdateEdad,
+}) => {
+  console.log("Empleados:", empleados);
 
   // Use useCallback to memoize the function and prevent unnecessary re-renders
   const handleUpdateEstatus = useCallback(
@@ -24,6 +14,11 @@ const EmpleadosComponent = ({ empleados, onDelete, onUpdateEdad }) => {
     },
     [onUpdateEstatus]
   );
+
+  // Use useEffect to log the updated empleados whenever it changes
+  useEffect(() => {
+    console.log("Updated Empleados:", empleados);
+  }, [empleados]);
 
   const renderActions = (empleado) => {
     if (empleado.estatus) {
@@ -57,7 +52,7 @@ const EmpleadosComponent = ({ empleados, onDelete, onUpdateEdad }) => {
         </tr>
       </thead>
       <tbody>
-        {empleadosState.map((empleado) => (
+        {empleados.map((empleado) => (
           <tr key={empleado.id}>
             <td>{empleado.id}</td>
             <td>{empleado.nombre}</td>
@@ -69,7 +64,10 @@ const EmpleadosComponent = ({ empleados, onDelete, onUpdateEdad }) => {
                 onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
               />
             </td>
-            <td>{empleado.estatus ? "Activo" : "Inactivo"}</td>
+            <td>
+              {" "}
+              <td>{empleado.estatus ? "Activo" : "Inactivo"}</td>
+            </td>
             <td>{renderActions(empleado)}</td>
           </tr>
         ))}

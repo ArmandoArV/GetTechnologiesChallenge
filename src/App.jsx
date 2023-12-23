@@ -7,9 +7,18 @@ export default function App() {
   const [empleados, setEmpleados] = useState([]);
 
   const handleAddEmpleado = (empleado) => {
-    setEmpleados([...empleados, { id: empleados.length + 1, ...empleado }]);
-  };
+    // Log the new employee data here
+    console.log("Employee registered:", empleado);
 
+    // Update the state with the new employee
+    const newEmpleados = [
+      ...empleados,
+      { id: empleados.length + 1, ...empleado },
+    ];
+    console.log("New empleados state:", newEmpleados);
+
+    setEmpleados(newEmpleados);
+  };
   const handleUpdateEdad = (id, nuevaEdad) => {
     setEmpleados(
       empleados.map((empleado) =>
@@ -22,9 +31,7 @@ export default function App() {
   const handleUpdateEstatus = (id, nuevoEstatus) => {
     setEmpleados(
       empleados.map((empleado) =>
-        empleado.id === id
-          ? { ...empleado, estatus: nuevoEstatus ? "Activo" : "Inactivo" }
-          : empleado
+        empleado.id === id ? { ...empleado, estatus: nuevoEstatus } : empleado
       )
     );
   };
@@ -32,10 +39,14 @@ export default function App() {
   const handleDelete = (id) => {
     setEmpleados(empleados.filter((empleado) => empleado.id !== id));
   };
+
   return (
     <div className="container">
       <div className="leftContainer">
-        <AltaComponent onSubmit={handleAddEmpleado} />
+        <AltaComponent
+          onSubmit={handleAddEmpleado}
+          onRegisterLog={(data) => console.log(data)}
+        />
       </div>
       <div className="rightContainer">
         <EmpleadosComponent

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AltaComponent = ({ onSubmit }) => {
+const AltaComponent = ({ onSubmit, onRegisterLog }) => {
   const [nombre, setNombre] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [cargo, setCargo] = useState("");
@@ -16,20 +16,26 @@ const AltaComponent = ({ onSubmit }) => {
 
     const fechaNacimientoMillis = new Date(fechaNacimiento).getTime();
 
-    onSubmit({
+    const newEmployeeData = {
       nombre,
       fechaNacimiento: fechaNacimientoMillis,
       edad,
       cargo,
       estatus: true,
-    });
+    };
 
+    // Call the logging function with the new employee data
+    onRegisterLog(newEmployeeData);
+
+    // Call the onSubmit prop function with the new employee data
+    onSubmit(newEmployeeData);
+
+    // Reset form fields
     setNombre("");
     setFechaNacimiento("");
     setEdad("");
     setCargo("");
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <label>
