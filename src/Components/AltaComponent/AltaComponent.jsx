@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./AltaComponent.css";
 const AltaComponent = ({ onSubmit, onRegisterLog }) => {
   const [nombre, setNombre] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
