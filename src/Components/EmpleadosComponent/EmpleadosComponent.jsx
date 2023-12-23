@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./EmpleadosComponent.css";
+
 const EmpleadosComponent = ({
   empleados,
   onUpdateEstatus,
@@ -46,61 +47,90 @@ const EmpleadosComponent = ({
     }
   };
 
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = useCallback((newPage) => {
+    setCurrentPage(newPage);
+  }, []);
+
+  const paginatedEmpleados = empleados.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Nombre</th>
-          <th>Cargo</th>
-          <th>Edad</th>
-          <th>Estatus</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {empleados.map((empleado) => (
-          <tr key={empleado.id}>
-            <td>{empleado.id}</td>
-            {empleado.estatus ? (
-              <td>{empleado.nombre}</td>
-            ) : (
-              <td>
-                <input
-                  type="text"
-                  value={empleado.nombre}
-                  onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
-                />
-              </td>
-            )}
-            {empleado.estatus ? (
-              <td>{empleado.cargo}</td>
-            ) : (
-              <td>
-                <input
-                  type="text"
-                  value={empleado.cargo}
-                  onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
-                />
-              </td>
-            )}
-            {empleado.estatus ? (
-              <td>{empleado.edad}</td>
-            ) : (
-              <td>
-                <input
-                  type="number"
-                  value={empleado.edad}
-                  onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
-                />
-              </td>
-            )}
-            <td>{empleado.estatus ? "Activo" : "Inactivo"}</td>
-            <td>{renderActions(empleado)}</td>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Cargo</th>
+            <th>Edad</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {paginatedEmpleados.map((empleado) => (
+            <tr key={empleado.id}>
+              <td>{empleado.id}</td>
+              {empleado.estatus ? (
+                <td>{empleado.nombre}</td>
+              ) : (
+                <td>
+                  <input
+                    type="text"
+                    value={empleado.nombre}
+                    onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
+                  />
+                </td>
+              )}
+              {empleado.estatus ? (
+                <td>{empleado.cargo}</td>
+              ) : (
+                <td>
+                  <input
+                    type="text"
+                    value={empleado.cargo}
+                    onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
+                  />
+                </td>
+              )}
+              {empleado.estatus ? (
+                <td>{empleado.edad}</td>
+              ) : (
+                <td>
+                  <input
+                    type="number"
+                    value={empleado.edad}
+                    onChange={(e) => onUpdateEdad(empleado.id, e.target.value)}
+                  />
+                </td>
+              )}
+              <td>{empleado.estatus ? "Activo" : "Inactivo"}</td>
+              <td>{renderActions(empleado)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {empleados.length > itemsPerPage && (
+        <div className="pagination">
+          {[...Array(Math.ceil(empleados.length / itemsPerPage))].map(
+            (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={currentPage === index + 1 ? "active" : ""}
+              >
+                {index + 1}
+              </button>
+            )
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 

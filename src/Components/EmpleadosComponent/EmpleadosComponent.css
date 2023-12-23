@@ -70,3 +70,24 @@ table tbody tr td {
   font-size: 1.2rem;
   margin: 0 10px;
 }
+
+/* Add this to your existing CSS file */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  background-color: #1d70b4;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 0 5px;
+}
+
+.pagination button.active {
+  background-color: #155a8a;
+}
